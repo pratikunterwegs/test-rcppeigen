@@ -1,0 +1,3 @@
+useDynLib(testrcppeigen)
+import(RcppEigen)
+importFrom(Rcpp, evalCpp)
