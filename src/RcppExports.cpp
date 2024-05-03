@@ -11,20 +11,34 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// square_rcppeigen_internal
-Eigen::VectorXd square_rcppeigen_internal(Eigen::VectorXd x);
-RcppExport SEXP _testrcppeigen_square_rcppeigen_internal(SEXP xSEXP) {
+// epi_spread
+Rcpp::List epi_spread(const Eigen::MatrixXd& contact_matrix, const Eigen::VectorXd& demography_vector, const Eigen::MatrixXd& p_susceptibility, const Eigen::MatrixXd& susceptibility);
+RcppExport SEXP _testrcppeigen_epi_spread(SEXP contact_matrixSEXP, SEXP demography_vectorSEXP, SEXP p_susceptibilitySEXP, SEXP susceptibilitySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(square_rcppeigen_internal(x));
+    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type contact_matrix(contact_matrixSEXP);
+    Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type demography_vector(demography_vectorSEXP);
+    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type p_susceptibility(p_susceptibilitySEXP);
+    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type susceptibility(susceptibilitySEXP);
+    rcpp_result_gen = Rcpp::wrap(epi_spread(contact_matrix, demography_vector, p_susceptibility, susceptibility));
+    return rcpp_result_gen;
+END_RCPP
+}
+// getTensor
+NumericVector getTensor();
+RcppExport SEXP _testrcppeigen_getTensor() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(getTensor());
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_testrcppeigen_square_rcppeigen_internal", (DL_FUNC) &_testrcppeigen_square_rcppeigen_internal, 1},
+    {"_testrcppeigen_epi_spread", (DL_FUNC) &_testrcppeigen_epi_spread, 4},
+    {"_testrcppeigen_getTensor", (DL_FUNC) &_testrcppeigen_getTensor, 0},
     {NULL, NULL, 0}
 };
 
