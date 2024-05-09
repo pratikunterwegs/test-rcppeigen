@@ -35,10 +35,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// somefun
+Rcpp::List somefun();
+RcppExport SEXP _testrcppeigen_somefun() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(somefun());
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_testrcppeigen_epi_spread", (DL_FUNC) &_testrcppeigen_epi_spread, 4},
     {"_testrcppeigen_getTensor", (DL_FUNC) &_testrcppeigen_getTensor, 0},
+    {"_testrcppeigen_somefun", (DL_FUNC) &_testrcppeigen_somefun, 0},
     {NULL, NULL, 0}
 };
 

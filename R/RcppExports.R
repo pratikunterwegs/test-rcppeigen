@@ -9,3 +9,8 @@ getTensor <- function() {
     .Call('_testrcppeigen_getTensor', PACKAGE = 'testrcppeigen')
 }
 
+#' @export
+somefun <- function() {
+    .Call('_testrcppeigen_somefun', PACKAGE = 'testrcppeigen')
+}
+
