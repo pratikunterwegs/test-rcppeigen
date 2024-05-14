@@ -45,11 +45,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// tensor_op
+void tensor_op(const Eigen::MatrixXd& mat);
+RcppExport SEXP _testrcppeigen_tensor_op(SEXP matSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type mat(matSEXP);
+    tensor_op(mat);
+    return R_NilValue;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_testrcppeigen_epi_spread", (DL_FUNC) &_testrcppeigen_epi_spread, 4},
     {"_testrcppeigen_getTensor", (DL_FUNC) &_testrcppeigen_getTensor, 0},
     {"_testrcppeigen_somefun", (DL_FUNC) &_testrcppeigen_somefun, 0},
+    {"_testrcppeigen_tensor_op", (DL_FUNC) &_testrcppeigen_tensor_op, 1},
     {NULL, NULL, 0}
 };
 

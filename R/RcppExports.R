@@ -14,3 +14,8 @@ somefun <- function() {
     .Call('_testrcppeigen_somefun', PACKAGE = 'testrcppeigen')
 }
 
+#' @export
+tensor_op <- function(mat) {
+    invisible(.Call('_testrcppeigen_tensor_op', PACKAGE = 'testrcppeigen', mat))
+}
+
