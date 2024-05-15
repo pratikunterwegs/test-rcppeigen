@@ -19,3 +19,13 @@ tensor_op <- function(mat) {
     invisible(.Call('_testrcppeigen_tensor_op', PACKAGE = 'testrcppeigen', mat))
 }
 
+#' @export
+tensor_op2 <- function(vec) {
+    invisible(.Call('_testrcppeigen_tensor_op2', PACKAGE = 'testrcppeigen', vec))
+}
+
+#' @export
+tensorop3 <- function() {
+    invisible(.Call('_testrcppeigen_tensorop3', PACKAGE = 'testrcppeigen'))
+}
+

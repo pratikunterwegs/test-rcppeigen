@@ -55,12 +55,33 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// tensor_op2
+void tensor_op2(const Rcpp::NumericVector& vec);
+RcppExport SEXP _testrcppeigen_tensor_op2(SEXP vecSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type vec(vecSEXP);
+    tensor_op2(vec);
+    return R_NilValue;
+END_RCPP
+}
+// tensorop3
+void tensorop3();
+RcppExport SEXP _testrcppeigen_tensorop3() {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    tensorop3();
+    return R_NilValue;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_testrcppeigen_epi_spread", (DL_FUNC) &_testrcppeigen_epi_spread, 4},
     {"_testrcppeigen_getTensor", (DL_FUNC) &_testrcppeigen_getTensor, 0},
     {"_testrcppeigen_somefun", (DL_FUNC) &_testrcppeigen_somefun, 0},
     {"_testrcppeigen_tensor_op", (DL_FUNC) &_testrcppeigen_tensor_op, 1},
+    {"_testrcppeigen_tensor_op2", (DL_FUNC) &_testrcppeigen_tensor_op2, 1},
+    {"_testrcppeigen_tensorop3", (DL_FUNC) &_testrcppeigen_tensorop3, 0},
     {NULL, NULL, 0}
 };
 
