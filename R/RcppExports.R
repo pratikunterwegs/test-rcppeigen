@@ -29,3 +29,8 @@ tensorop3 <- function() {
     invisible(.Call('_testrcppeigen_tensorop3', PACKAGE = 'testrcppeigen'))
 }
 
+#' @export
+tensor_epidemic <- function() {
+    .Call('_testrcppeigen_tensor_epidemic', PACKAGE = 'testrcppeigen')
+}
+

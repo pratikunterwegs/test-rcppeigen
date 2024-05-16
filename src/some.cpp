@@ -52,7 +52,7 @@ Rcpp::List somefun() {
   //]
 
   // using rk_dopri5
-  vector_type x2( 2 , 1.0 );
+  vector_type x2(2, 1.0);
   size_t num_of_steps2 = integrate_const(
       make_dense_output<runge_kutta_dopri5<vector_type> >(1.0e-6, 1.0e-6),
       stiff_system(), x2, 0.0, 50.0, 0.01,
@@ -60,7 +60,5 @@ Rcpp::List somefun() {
                   << phoenix::arg_names::arg1[0] << "\n");
   //]
 
-  return Rcpp::List::create(
-    num_of_steps, num_of_steps2
-  );
+  return Rcpp::List::create(num_of_steps, num_of_steps2);
 }
