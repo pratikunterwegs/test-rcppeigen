@@ -208,7 +208,7 @@ Rcpp::List tensor_epidemic(const double &tmax) {
   std::vector<double> times;
 
   // a controlled stepper for constant step sizes
-  boost::numeric::odeint::runge_kutta4<state_type> stepper;
+  boost::numeric::odeint::bulirsch_stoer<state_type> stepper;
 
   // run the function without assignment
   boost::numeric::odeint::integrate_const(stepper, this_model, state, 0.0, tmax,
