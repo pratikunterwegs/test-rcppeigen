@@ -90,7 +90,10 @@ void tensor_op2(const Rcpp::NumericVector &vec) {
 
   vec2[0] = 99.0;
 
-  std::cout << tensor.chip(0, 2) << " is the first channel \n";
+  std::cout << tensor.chip(1, 1) << "\n";
+
+  std::cout << tensor.chip(1, 1).sum(Eigen::array<int, 1>({1}))
+            << " is the rowsum of first col\n";
 
   tensor(0, 0, 0) = 199.0;
 
