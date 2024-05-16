@@ -30,7 +30,7 @@ tensorop3 <- function() {
 }
 
 #' @export
-tensor_epidemic <- function() {
-    .Call('_testrcppeigen_tensor_epidemic', PACKAGE = 'testrcppeigen')
+tensor_epidemic <- function(tmax) {
+    .Call('_testrcppeigen_tensor_epidemic', PACKAGE = 'testrcppeigen', tmax)
 }
 

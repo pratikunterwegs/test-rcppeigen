@@ -150,7 +150,7 @@ struct observer {
 
 //' @export
 // [[Rcpp::export()]]
-Rcpp::List tensor_epidemic() {
+Rcpp::List tensor_epidemic(const double &tmax) {
   // some initial state
   state_type state{1.0, 2.0, 3.0, 4.0,  5.0,  6.0,
                    7.0, 8.0, 9.0, 10.0, 11.0, 12.0};
@@ -180,7 +180,20 @@ Rcpp::List tensor_epidemic() {
           Eigen::TensorMap<Eigen::Tensor<double, 3, Eigen::ColMajor>>(&dx[0], 2,
                                                                       2, 3);
 
-      dx_tensor = dx_tensor + (99.0 * t);
+      // implement matrix mult on slices
+      Eigen::Tensor<double, 2> a(2, 2);
+      a.setValues({{9.0, 1.0}, {9.0, 1.0}});
+
+      // Compute the traditional matrix product
+      Eigen::array<Eigen::IndexPair<int>, 1> product_dims = {
+        Eigen::IndexPair<int>(1, 0)};
+
+      for (size_t i = 0; i < 3; i++)
+      {
+        dx_tensor.chip(i, 2) = (dx_tensor.chip(i, 2) + 1.0).contract(a, product_dims);
+      }
+
+      // dx_tensor = dx_tensor + (99.0 * t);
     }
   };
 
@@ -195,7 +208,7 @@ Rcpp::List tensor_epidemic() {
   boost::numeric::odeint::runge_kutta4<state_type> stepper;
 
   // run the function without assignment
-  boost::numeric::odeint::integrate_const(stepper, this_model, state, 0.0, 1.0,
+  boost::numeric::odeint::integrate_const(stepper, this_model, state, 0.0, tmax,
                                           0.1, observer(x_vec, times));
 
   return Rcpp::List::create(Rcpp::Named("x") = Rcpp::wrap(x_vec),

@@ -75,12 +75,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // tensor_epidemic
-Rcpp::List tensor_epidemic();
-RcppExport SEXP _testrcppeigen_tensor_epidemic() {
+Rcpp::List tensor_epidemic(const double& tmax);
+RcppExport SEXP _testrcppeigen_tensor_epidemic(SEXP tmaxSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(tensor_epidemic());
+    Rcpp::traits::input_parameter< const double& >::type tmax(tmaxSEXP);
+    rcpp_result_gen = Rcpp::wrap(tensor_epidemic(tmax));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -92,7 +93,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_testrcppeigen_tensor_op", (DL_FUNC) &_testrcppeigen_tensor_op, 1},
     {"_testrcppeigen_tensor_op2", (DL_FUNC) &_testrcppeigen_tensor_op2, 1},
     {"_testrcppeigen_tensorop3", (DL_FUNC) &_testrcppeigen_tensorop3, 0},
-    {"_testrcppeigen_tensor_epidemic", (DL_FUNC) &_testrcppeigen_tensor_epidemic, 0},
+    {"_testrcppeigen_tensor_epidemic", (DL_FUNC) &_testrcppeigen_tensor_epidemic, 1},
     {NULL, NULL, 0}
 };
 
