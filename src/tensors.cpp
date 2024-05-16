@@ -186,14 +186,14 @@ Rcpp::List tensor_epidemic(const double &tmax) {
 
       // Compute the traditional matrix product
       Eigen::array<Eigen::IndexPair<int>, 1> product_dims = {
-        Eigen::IndexPair<int>(1, 0)};
+          Eigen::IndexPair<int>(1, 0)};
 
-      for (size_t i = 0; i < 3; i++)
-      {
-        dx_tensor.chip(i, 2) = (dx_tensor.chip(i, 2) + 1.0).contract(a, product_dims);
+      for (size_t i = 0; i < 3; i++) {
+        dx_tensor.chip(i, 2).chip(0, 1) =
+            a.contract(dx_tensor.chip(i, 2).chip(0, 1) + 1.0, product_dims);
       }
 
-      // dx_tensor = dx_tensor + (99.0 * t);
+      dx_tensor(0, 0, 0) = dx_tensor(0, 0, 0) + (99999.0 * t);
     }
   };
 
