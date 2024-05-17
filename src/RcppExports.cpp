@@ -85,6 +85,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// aging
+void aging();
+RcppExport SEXP _testrcppeigen_aging() {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    aging();
+    return R_NilValue;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_testrcppeigen_epi_spread", (DL_FUNC) &_testrcppeigen_epi_spread, 4},
@@ -94,6 +103,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_testrcppeigen_tensor_op2", (DL_FUNC) &_testrcppeigen_tensor_op2, 1},
     {"_testrcppeigen_tensorop3", (DL_FUNC) &_testrcppeigen_tensorop3, 0},
     {"_testrcppeigen_tensor_epidemic", (DL_FUNC) &_testrcppeigen_tensor_epidemic, 1},
+    {"_testrcppeigen_aging", (DL_FUNC) &_testrcppeigen_aging, 0},
     {NULL, NULL, 0}
 };
 

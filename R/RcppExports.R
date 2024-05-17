@@ -34,3 +34,8 @@ tensor_epidemic <- function(tmax) {
     .Call('_testrcppeigen_tensor_epidemic', PACKAGE = 'testrcppeigen', tmax)
 }
 
+#' @export
+aging <- function() {
+    invisible(.Call('_testrcppeigen_aging', PACKAGE = 'testrcppeigen'))
+}
+

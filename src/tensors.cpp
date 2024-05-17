@@ -95,9 +95,38 @@ void tensor_op2(const Rcpp::NumericVector &vec) {
   std::cout << tensor.chip(1, 1).sum(Eigen::array<int, 1>({1}))
             << " is the rowsum of first col\n";
 
-  tensor(0, 0, 0) = 199.0;
+  Eigen::Tensor<double, 1> m(2);
+  m.setValues({3.0, 4.0});
 
-  std::cout << vec2[0] << "\n";
+  Eigen::Tensor<double, 2> m_broadcast =
+      m.broadcast(std::array<long, 1>{3}).reshape(std::array<long, 2>{2, 3});
+
+  std::cout << "broadcast m = \n" << m_broadcast << "\n";
+
+  std::cout << "tensor chip first col = \n" << tensor.chip(0, 1) << "\n";
+
+  Eigen::Tensor<double, 2> tchip = tensor.chip(0, 1);
+
+  const auto &d = tchip.dimensions();
+
+  std::cout << "Dim size: " << d.size() << ", dim 0: " << d[0]
+            << ", dim 1: " << d[1];
+
+  std::cout << "\n prod = \n" << tchip * m_broadcast << "\n";
+
+  // answer from
+  // https://stackoverflow.com/questions/57772161/how-to-broadcast-eigentensor-to-higher-dimensions
+  // std::cout << tensor.chip(0, 1) * m.broadcast(Eigen::array<int,
+  // 1>{3}).reshape(Eigen::array<int, 3>{2, 1, 3})
+  //           << " is the element wise prod of first col\n";
+
+  // tensor(0, 0, 0) = 199.0;
+
+  tensor.chip(0, 1) = tchip * m_broadcast;
+
+  std::cout << "\nlinked assignment = " << vec2[0] << "\n";
+
+  std::cout << "\ntensor = " << tensor << "\n";
 }
 
 //' @export
@@ -131,7 +160,10 @@ void tensorop3() {
 
   // Reduce it along the second dimension (1)...
   std::cout << "rowsumns of tensor:\n"
-            << x.slice(offsets, extents).sum(Eigen::array<int, 2>({1, 2}))
+            << (1.0 -
+                x.slice(offsets, extents).sum(Eigen::array<int, 2>({1, 2})))
+            << "\n full sum = \n"
+            << x.slice(offsets, extents).sum(Eigen::array<int, 3>({0, 1, 2}))
             << std::endl;
 }
 
@@ -216,4 +248,30 @@ Rcpp::List tensor_epidemic(const double &tmax) {
 
   return Rcpp::List::create(Rcpp::Named("x") = Rcpp::wrap(x_vec),
                             Rcpp::Named("time") = Rcpp::wrap(times));
+}
+
+//' @export
+// [[Rcpp::export()]]
+void aging() {
+  Eigen::Tensor<double, 3> t(2, 3, 3);
+  t.setZero();
+  t = t + 10.0;
+  Eigen::MatrixXd a(2, 2);
+  // a.setValues({{-0.1, 0.09}, {0.0, -0.25}});
+  a << -0.1, 0.09, 0.0, -0.25;
+
+  auto amap = Eigen::TensorMap<Eigen::Tensor<double, 2>>(a.data(), 2, 2);
+
+  std::cout << "tensor = \n" << t << "\n";
+
+  std::cout << "a = \n" << a << "\n";
+
+  // auto aging_broadcast = a.broadcast(Eigen::array<long, 2>{1,
+  // 3}).reshape(Eigen::array<long, 3>{2, 2, 3}); std::cout << at.chip(0, 2);
+  std::cout << "aging = \n"
+            << t.chip(0, 2) +
+                   amap.contract(t.chip(0, 2),
+                                 Eigen::array<Eigen::IndexPair<int>, 1>{
+                                     Eigen::IndexPair<int>(1, 0)})
+            << "\n";
 }
