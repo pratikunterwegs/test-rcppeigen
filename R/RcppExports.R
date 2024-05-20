@@ -39,3 +39,8 @@ aging <- function() {
     invisible(.Call('_testrcppeigen_aging', PACKAGE = 'testrcppeigen'))
 }
 
+#' @export
+tensormult <- function() {
+    invisible(.Call('_testrcppeigen_tensormult', PACKAGE = 'testrcppeigen'))
+}
+

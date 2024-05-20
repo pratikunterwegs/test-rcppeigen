@@ -158,12 +158,15 @@ void tensorop3() {
   Eigen::array<Eigen::Index, 3> offsets = {0, 0, 0};
   Eigen::array<Eigen::Index, 3> extents = {2, 2, 3};
 
+  Eigen::Tensor<int, 0> sum_ = x.slice(offsets, extents).sum();
+  int sum = sum_.coeff();
+
   // Reduce it along the second dimension (1)...
   std::cout << "rowsumns of tensor:\n"
             << (1.0 -
                 x.slice(offsets, extents).sum(Eigen::array<int, 2>({1, 2})))
             << "\n full sum = \n"
-            << x.slice(offsets, extents).sum(Eigen::array<int, 3>({0, 1, 2}))
+            << sum
             << std::endl;
 }
 
@@ -274,4 +277,40 @@ void aging() {
                                  Eigen::array<Eigen::IndexPair<int>, 1>{
                                      Eigen::IndexPair<int>(1, 0)})
             << "\n";
+}
+
+//' @export
+// [[Rcpp::export()]]
+void tensormult () {
+  // mat mult prod dims
+  Eigen::array<Eigen::IndexPair<int>, 1> product_dims = {
+      Eigen::IndexPair<int>(1, 0)};
+  
+  Eigen::Tensor<double, 2> contacts (4, 4);
+  contacts.setConstant(99.0);
+
+  Eigen::Tensor<double, 3> a (4, 2, 3);
+  a.setRandom();
+
+  Eigen::Tensor<double, 1> b (4);
+  b.setValues({0.0, 1.0, 0.0, 1.0});
+
+  auto bbroad = b.reshape(std::array<long, 2>{4, 1}).broadcast(std::array<long, 2>{1, 3});
+
+  auto achip = a.chip(0, 1);
+
+  Eigen::Tensor<double, 2> achipops = (achip + (achip * 0.1)).sum(Eigen::array<long, 1>{1}).reshape(std::array<long, 2>{4, 1});
+
+  std::cout << "a = \n" << a << "\n";
+  std::cout << "a chip op = \n" << achipops.dimension(0)
+   << "dim 2 = " << achipops.dimension(1) << "\n";
+
+  std::cout << "contact ops = \n" <<
+    contacts.contract(achipops, product_dims);
+  
+  std::cout << "b = \n" << bbroad << "\n";
+  std::cout << "a * b element wise = \n" << achip * bbroad << "\n";
+
+  a.chip(0, 1) = a.chip(0, 1) - a.chip(1, 1);
+  std::cout << "a new = \n" << a << "\n";
 }

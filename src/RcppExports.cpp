@@ -94,6 +94,15 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// tensormult
+void tensormult();
+RcppExport SEXP _testrcppeigen_tensormult() {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    tensormult();
+    return R_NilValue;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_testrcppeigen_epi_spread", (DL_FUNC) &_testrcppeigen_epi_spread, 4},
@@ -104,6 +113,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_testrcppeigen_tensorop3", (DL_FUNC) &_testrcppeigen_tensorop3, 0},
     {"_testrcppeigen_tensor_epidemic", (DL_FUNC) &_testrcppeigen_tensor_epidemic, 1},
     {"_testrcppeigen_aging", (DL_FUNC) &_testrcppeigen_aging, 0},
+    {"_testrcppeigen_tensormult", (DL_FUNC) &_testrcppeigen_tensormult, 0},
     {NULL, NULL, 0}
 };
 
